@@ -1,0 +1,178 @@
+@"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-GitHeal Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">⚕</div>
+            <div>
+                <h2>AI-GitHeal</h2>
+                <span>Self-Healing DevOps</span>
+            </div>
+        </div>
+
+        <nav>
+            <a class="active">Dashboard</a>
+            <a>Incidents</a>
+            <a>AI Analysis</a>
+            <a>Kubernetes</a>
+            <a>Monitoring</a>
+            <a>GitOps</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <span>Environment</span>
+            <strong>Development</strong>
+        </div>
+    </div>
+
+    <main>
+
+        <header>
+            <div>
+                <h1>AI-GitHeal Dashboard</h1>
+                <p>AI-powered GitOps self-healing platform</p>
+            </div>
+
+            <div class="system-status">
+                <span class="status-dot"></span>
+                <span id="systemStatus">Checking...</span>
+            </div>
+        </header>
+
+        <section class="cards">
+
+            <div class="card">
+                <div class="card-title">SYSTEM STATUS</div>
+                <div class="card-value" id="statusValue">Checking</div>
+                <div class="card-subtitle">Application health</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">VERSION</div>
+                <div class="card-value" id="versionValue">--</div>
+                <div class="card-subtitle">Current release</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">UPTIME</div>
+                <div class="card-value" id="uptimeValue">--</div>
+                <div class="card-subtitle">Application uptime</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">INCIDENTS</div>
+                <div class="card-value">0</div>
+                <div class="card-subtitle">Active incidents</div>
+            </div>
+
+        </section>
+
+        <section class="content-grid">
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Application Status</h2>
+                    <span class="badge healthy">HEALTHY</span>
+                </div>
+
+                <div class="status-box">
+                    <div class="big-check">✓</div>
+                    <div>
+                        <h3>AI-GitHeal Backend</h3>
+                        <p id="hostname">Connecting to backend...</p>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <span>Environment</span>
+                    <strong id="environment">--</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Version</span>
+                    <strong id="versionInfo">--</strong>
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>AI Incident Monitor</h2>
+                    <span class="badge monitoring">MONITORING</span>
+                </div>
+
+                <div class="empty-state">
+                    <div class="monitor-icon">◉</div>
+                    <h3>No Active Incidents</h3>
+                    <p>AI-GitHeal is continuously monitoring the application.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="panel metrics-panel">
+
+            <div class="panel-header">
+                <h2>System Overview</h2>
+                <span class="live">● LIVE</span>
+            </div>
+
+            <div class="metrics">
+
+                <div class="metric">
+                    <span>Application</span>
+                    <strong>Running</strong>
+                </div>
+
+                <div class="metric">
+                    <span>Backend</span>
+                    <strong>Connected</strong>
+                </div>
+
+                <div class="metric">
+                    <span>Kubernetes</span>
+                    <strong>Pending</strong>
+                </div>
+
+                <div class="metric">
+                    <span>AI Engine</span>
+                    <strong>Pending</strong>
+                </div>
+
+                <div class="metric">
+                    <span>Monitoring</span>
+                    <strong>Pending</strong>
+                </div>
+
+                <div class="metric">
+                    <span>GitOps</span>
+                    <strong>Pending</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+        <footer>
+            AI-GitHeal © 2026 | AI-Powered Self-Healing Infrastructure
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+"@ | Set-Content index.html
