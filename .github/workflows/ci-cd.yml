@@ -4,20 +4,23 @@ on:
   push:
     branches:
       - main
-      - master
 
   pull_request:
     branches:
       - main
-      - master
+
 
 jobs:
 
+  # ==========================================
+  # JOB 1: TEST BACKEND
+  # ==========================================
   test:
     name: Test Backend
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -26,44 +29,90 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         working-directory: app/backend
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Check Python application
+      - name: Check Python syntax
         working-directory: app/backend
         run: |
           python -m py_compile app.py
 
+      - name: Test Flask application
+        working-directory: app/backend
+        run: |
+          python -c "from app import app; print('Flask application loaded successfully')"
 
+
+  # ==========================================
+  # JOB 2: BUILD AND PUSH DOCKER IMAGE
+  # ==========================================
   docker:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
     needs: test
 
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # ------------------------------------------
+      # Docker Hub Login
+      # ------------------------------------------
+      - name: Log in to Docker Hub
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          echo "$DOCKERHUB_TOKEN" | docker login docker.io \
+            --username "$DOCKERHUB_USERNAME" \
+            --password-stdin
+
+
+      # ------------------------------------------
+      # Build Docker Image
+      # ------------------------------------------
       - name: Build Docker image
         working-directory: app/backend
         run: |
-          docker build -t ragini4505/ai-githeal-backend:${{ github.sha }} .
-          docker tag ragini4505/ai-githeal-backend:${{ github.sha }} ragini4505/ai-githeal-backend:latest
+          docker build \
+            -t ragini4505/ai-githeal-backend:${{ github.sha }} \
+            -t ragini4505/ai-githeal-backend:latest \
+            .
 
-      - name: Push Docker image
+
+      # ------------------------------------------
+      # Push SHA Tagged Image
+      # ------------------------------------------
+      - name: Push versioned Docker image
         run: |
           docker push ragini4505/ai-githeal-backend:${{ github.sha }}
+
+
+      # ------------------------------------------
+      # Push Latest Image
+      # ------------------------------------------
+      - name: Push latest Docker image
+        run: |
           docker push ragini4505/ai-githeal-backend:latest
 
+
+      # ------------------------------------------
+      # Verify Docker Image
+      # ------------------------------------------
       - name: Verify Docker image
         run: |
           docker images ragini4505/ai-githeal-backend
+
+
+      # ------------------------------------------
+      # Logout from Docker Hub
+      # ------------------------------------------
+      - name: Logout from Docker Hub
+        if: always()
+        run: |
+          docker logout docker.io
